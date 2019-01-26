@@ -42,6 +42,17 @@ public class BluetoothController {
         }
     }
 
+    public void setLed (int value) {
+        try {
+            this.mySocket.getOutputStream().write(value);
+
+        } catch (Exception e) {
+            Toast.makeText(this.parent.getApplicationContext(),
+                    "Error sending info via bluetooth",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
     BluetoothController(Activity parent) {
         this.parent = parent;
         myAdapter = BluetoothAdapter.getDefaultAdapter();

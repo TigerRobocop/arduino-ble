@@ -75,10 +75,7 @@ public class MainActivity extends AppCompatActivity {
                                           boolean fromUser) {
 
                 txtLedValue.setText(progress + "");
-//                // TODO Auto-generated method stub
-//                PRICEtextProgress = (TextView)findViewById(R.id.PRICEtextViewProgressID);
-//                PRICEtextProgress.setText("Price:: Rs "+progress);
-//                seekBar.setMax(100);
+                controller.setLed(progress);
             }
         });
     }

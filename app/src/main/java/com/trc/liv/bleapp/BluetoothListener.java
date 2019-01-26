@@ -15,7 +15,6 @@ public class BluetoothListener extends Thread {
 
         try {
             this.bluetoothIn = this.controller.getSocket().getInputStream();
-
             this.isRunning = true;
         } catch (Exception e) {
             Toast.makeText(this.controller.getParent().getApplicationContext(),
@@ -23,6 +22,7 @@ public class BluetoothListener extends Thread {
                     Toast.LENGTH_LONG).show();
         }
     }
+
 
     public void run() {
         byte[] buffer = new byte[256];
@@ -45,7 +45,28 @@ public class BluetoothListener extends Thread {
                     }
                 }
             } catch (Exception e) {
+                Toast.makeText(this.controller.getParent().getApplicationContext(),
+                        "Run error",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
+    public void runLed() {
+        byte[] buffer = new byte[256];
+
+        while (this.isRunning) {
+            try {
+                int bytesAvailable = this.bluetoothIn.available();
+
+                if (bytesAvailable > 0) {
+                    String readText = new String(buffer);
+                    this.controller.getParent().runOnUiThread(new actionToDo(this.controller, readText));
+                }
+            } catch (Exception e) {
+                Toast.makeText(this.controller.getParent().getApplicationContext(),
+                        "Run error",
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -67,7 +88,6 @@ public class BluetoothListener extends Thread {
 
         @Override
         public void run() {
-
             Toast.makeText(this.controller.getParent().getApplicationContext(),
                     "Received: " + this.received,
                     Toast.LENGTH_LONG).show();
