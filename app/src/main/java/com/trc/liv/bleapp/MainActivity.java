@@ -1,12 +1,18 @@
 package com.trc.liv.bleapp;
 
+import android.content.Context;
+import android.hardware.Camera;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -14,8 +20,12 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnConnect;
     Button btnSend;
+    ToggleButton btnToggle;
     SeekBar seekBar;
     TextView txtLedValue;
+    Camera camera;
+
+    boolean lightsOn = false;
 
     static BluetoothController controller;
 
@@ -30,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnConnect = findViewById(R.id.btn_connect);
         btnSend = findViewById(R.id.btn_send);
+        btnToggle = findViewById(R.id.btn_toggle);
         seekBar = findViewById(R.id.seekbar_led);
         txtLedValue = findViewById(R.id.txt_ledValue);
 
@@ -59,7 +70,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener () {
+        btnToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                try {
+                    if (checked) {
+                        flashlightOn();
+
+                    } else {
+                        flashlightOff();
+                    }
+                } catch (Exception e) {
+                    Log.d("BLE", e.getMessage());
+                }
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 // TODO Auto-generated method stub
@@ -78,6 +105,33 @@ public class MainActivity extends AppCompatActivity {
                 controller.setLed(progress);
             }
         });
+    }
+
+    public void flashlightOn() {
+        CameraManager cm = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        try {
+            if (!lightsOn) {
+                String cameraId = cm.getCameraIdList()[0];
+                cm.setTorchMode(cameraId, true);
+                lightsOn = true;
+            }
+        } catch (CameraAccessException e) {
+
+        }
+
+    }
+
+    public void flashlightOff() {
+        CameraManager cm = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        try {
+            if (lightsOn) {
+                String cameraId = cm.getCameraIdList()[0];
+                cm.setTorchMode(cameraId, false);
+                lightsOn = false;
+            }
+        } catch (CameraAccessException e) {
+
+        }
     }
 }
 
