@@ -30,6 +30,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ArrayList<String> pairedDevices = myController.getPairedDevices();
+
+                for (String deviceInfo : pairedDevices) {
+                     if (deviceInfo.contains("livble")) {
+                         String[] splitInfo = deviceInfo.split("_");
+                         String address = splitInfo[1];
+
+                         myController.connect(address);
+                     }
+                }
             }
         });
 

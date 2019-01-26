@@ -20,6 +20,9 @@ public class BluetoothController {
 
 
 
+    public void connect(String address) {
+
+    }
 
     BluetoothController (Activity parent) {
         this.parent = parent;
@@ -27,7 +30,7 @@ public class BluetoothController {
 
         if (myAdapter == null) {
             Toast.makeText(this.parent.getApplicationContext(),
-                    "no bluetooth available",
+                    "Bluetooth is not available",
                     Toast.LENGTH_LONG).show();
         } else if (!myAdapter.isEnabled()) {
             Intent bluetoothPermission = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
