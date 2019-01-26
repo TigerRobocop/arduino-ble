@@ -2,6 +2,7 @@ package com.trc.liv.bleapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -32,12 +33,14 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> pairedDevices = myController.getPairedDevices();
 
                 for (String deviceInfo : pairedDevices) {
-                     if (deviceInfo.contains("livble")) {
-                         String[] splitInfo = deviceInfo.split("_");
-                         String address = splitInfo[1];
+                    if (deviceInfo.contains("livble")) {
+                        String[] splitInfo = deviceInfo.split("_");
+                        String address = splitInfo[1];
 
-                         myController.connect(address);
-                     }
+                        myController.connect(address);
+
+                        Log.d("BLE", address);
+                    }
                 }
             }
         });
@@ -49,14 +52,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    public void initBluetoothAdapter(){
-
-    }
 }
-
-
-
 
 
 // 1. inicializar bluetooth - bluetooth controller

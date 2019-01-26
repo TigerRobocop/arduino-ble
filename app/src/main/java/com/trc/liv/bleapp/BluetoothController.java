@@ -18,13 +18,12 @@ public class BluetoothController {
     BluetoothSocket mySocket;
 
 
-
-
     public void connect(String address) {
-
+        BluetoothConnection connection = new BluetoothConnection(this, address);
+        connection.execute();
     }
 
-    BluetoothController (Activity parent) {
+    BluetoothController(Activity parent) {
         this.parent = parent;
         myAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -58,11 +57,11 @@ public class BluetoothController {
 
     }
 
-    public Activity getParent(){
+    public Activity getParent() {
         return this.parent;
     }
 
-    public BluetoothAdapter getAdapter(){
+    public BluetoothAdapter getAdapter() {
         return this.myAdapter;
     }
 
