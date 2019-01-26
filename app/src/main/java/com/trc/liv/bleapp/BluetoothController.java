@@ -3,6 +3,7 @@ package com.trc.liv.bleapp;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
@@ -14,6 +15,11 @@ public class BluetoothController {
 
     Activity parent;
     BluetoothAdapter myAdapter;
+    BluetoothSocket mySocket;
+
+
+
+
 
     BluetoothController (Activity parent) {
         this.parent = parent;
@@ -29,6 +35,7 @@ public class BluetoothController {
         }
     }
 
+    // getters
     public ArrayList<String> getPairedDevices() {
         ArrayList<String> pairedDevices = new ArrayList<String>();
 
@@ -44,6 +51,8 @@ public class BluetoothController {
             Log.d("BLE", newInfo);
         }
 
+        return pairedDevices;
+
     }
 
     public Activity getParent(){
@@ -52,5 +61,14 @@ public class BluetoothController {
 
     public BluetoothAdapter getAdapter(){
         return this.myAdapter;
+    }
+
+    public BluetoothSocket getSocket() {
+        return this.mySocket;
+    }
+
+    // setters
+    public void setSocket(BluetoothSocket socket) {
+        this.mySocket = socket;
     }
 }
