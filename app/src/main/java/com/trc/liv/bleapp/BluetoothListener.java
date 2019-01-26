@@ -72,6 +72,33 @@ public class BluetoothListener extends Thread {
     }
 
 
+    public void runClick() {
+        byte[] buffer = new byte[256];
+        int bytesRead = 0;
+        int latestPos = 0;
+
+        while (this.isRunning) {
+            try {
+                int bytesAvailable = this.bluetoothIn.available();
+
+                if (bytesAvailable > 0) {
+                    bytesRead = this.bluetoothIn.read(buffer, latestPos, bytesAvailable);
+                    latestPos += bytesRead;
+
+                    String readText = new String(buffer, 0, latestPos);
+
+                    if (readText.contains("\n")) {
+                        latestPos = 0;
+                        this.controller.getParent().runOnUiThread(new actionToDo(this.controller, readText));
+                    }
+                }
+            } catch (Exception e) {
+                Toast.makeText(this.controller.getParent().getApplicationContext(),
+                        "Run error",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    }
     public void stopThread() {
         this.isRunning = false;
     }
@@ -91,7 +118,6 @@ public class BluetoothListener extends Thread {
             Toast.makeText(this.controller.getParent().getApplicationContext(),
                     "Received: " + this.received,
                     Toast.LENGTH_LONG).show();
-
         }
     }
 }
