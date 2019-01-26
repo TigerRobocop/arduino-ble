@@ -3,6 +3,7 @@ package com.trc.liv.bleapp;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.UUID;
@@ -38,6 +39,8 @@ public class BluetoothConnection extends AsyncTask<Void, Void, Void> {
             Toast.makeText(this.controller.getParent().getApplicationContext(),
                     "Connected to bluetooth",
                     Toast.LENGTH_LONG).show();
+
+            this.controller.startListening();
         } else {
             Toast.makeText(this.controller.getParent().getApplicationContext(),
                     "Connection to bluetooth failed",
@@ -60,7 +63,8 @@ public class BluetoothConnection extends AsyncTask<Void, Void, Void> {
             this.connectionSuccess = true;
 
         } catch (Exception e) {
-this.connectionSuccess= false;
+            Log.d("BLE", this.addressToConnect);
+            this.connectionSuccess = false;
         }
         return null;
     }

@@ -16,11 +16,30 @@ public class BluetoothController {
     Activity parent;
     BluetoothAdapter myAdapter;
     BluetoothSocket mySocket;
+    BluetoothListener listener;
 
+
+    public void startListening () {
+        this.listener = new BluetoothListener(this);
+        this.listener.start();
+    }
 
     public void connect(String address) {
         BluetoothConnection connection = new BluetoothConnection(this, address);
         connection.execute();
+    }
+
+    public void send(String s) {
+        s = s + "\n";
+
+        try {
+            this.mySocket.getOutputStream().write(s.getBytes());
+
+        } catch (Exception e) {
+            Toast.makeText(this.parent.getApplicationContext(),
+                    "Error sending info via bluetooth",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     BluetoothController(Activity parent) {
